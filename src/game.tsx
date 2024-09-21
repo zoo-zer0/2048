@@ -6,17 +6,28 @@ export function initGrid(): number[][] {
   return generateTwo(generateTwo(grid));
 }
 export function generateTwo(grid: number[][]): number[][] {
-  const emptyCells = [];
+  let emptyCells: [number, number][]= [];
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
-      if (grid[i][j] === 0) {
+      if (grid[i]?.[j] === 0) {
         emptyCells.push([i, j]);
       }
     }
   }
   if (emptyCells.length === 0) return grid;
-  const [row, col] = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-  grid[row][col] = 2;
+  const randomIndex = Math.floor(Math.random() * emptyCells.length);
+  const selectedCell = emptyCells[randomIndex];
+  if (selectedCell) {
+    const [row, col] = selectedCell; // Now this is safe
+
+    // Create a copy of the grid to avoid mutation
+    const newGrid = grid.map(row => [...row]);
+
+    // Set the selected cell to 2
+    newGrid[row][col] = 2;
+
+    return newGrid;
+    }
   return grid;
 }
 
@@ -92,17 +103,17 @@ export function moveDown(grid: number[][]): number[][] {
   const merged = Array.from({ length: 4 }, () => Array(4).fill(false));
   for (let row = 3; row >= 0; row--) {
     for (let col = 0; col < 4; col++) {
-      if (newGrid[row][col] === 0) continue;
+      if (newGrid[row]?.[col] === 0) continue;
       let rowa = row;
-      while (rowa < 3 && newGrid[rowa + 1][col] === 0) {
-        newGrid[rowa + 1][col] = newGrid[rowa][col];
-        newGrid[rowa][col] = 0;
+      while (rowa < 3 && newGrid[rowa + 1]?.[col] === 0) {
+        newGrid[rowa + 1][col] = newGrid[rowa]?.[col];
+        newGrid[rowa][col] = 0; 
         rowa++;
       }
       if (
         rowa < 3 &&
-        newGrid[rowa + 1][col] === newGrid[rowa][col] &&
-        !merged[rowa + 1][col]
+        newGrid[rowa + 1]?.[col] === newGrid[rowa]?.[col] &&
+        !merged[rowa + 1]?.[col]
       ) {
         newGrid[rowa + 1][col] *= 2;
         newGrid[rowa][col] = 0;
@@ -118,17 +129,17 @@ export function moveUp(grid: number[][]): number[][] {
   const merged = Array.from({ length: 4 }, () => Array(4).fill(false));
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 4; col++) {
-      if (newGrid[row][col] === 0) continue;
+      if (newGrid[row]?.[col] === 0) continue;
       let rowa = row;
-      while (rowa > 0 && newGrid[rowa - 1][col] === 0) {
-        newGrid[rowa - 1][col] = newGrid[rowa][col];
+      while (rowa > 0 && newGrid[rowa - 1]?.[col] === 0) {
+        newGrid[rowa - 1][col] = newGrid[rowa]?.[col];
         newGrid[rowa][col] = 0;
         rowa--;
       }
       if (
         rowa > 0 &&
-        newGrid[rowa - 1][col] === newGrid[rowa][col] &&
-        !merged[rowa - 1][col]
+        newGrid[rowa - 1]?.[col] === newGrid[rowa]?.[col] &&
+        !merged[rowa - 1]?.[col]
       ) {
         newGrid[rowa - 1][col] *= 2;
         newGrid[rowa][col] = 0;
@@ -144,16 +155,16 @@ export function moveRight(grid: number[][]): number[][] {
   const merged = Array.from({ length: 4 }, () => Array(4).fill(false));
   for (let x = 3; x >= 0; x--) {
     for (let y = 0; y < 4; y++) {
-      if (newGrid[y][x] === 0) continue;
+      if (newGrid[y]?.[x] === 0) continue;
       let xa = x;
-      while (xa < 3 && newGrid[y][xa + 1] === 0) {
-        newGrid[y][xa + 1] = newGrid[y][xa];
+      while (xa < 3 && newGrid[y]?.[xa + 1] === 0) {
+        newGrid[y][xa + 1] = newGrid[y]?.[xa];
         newGrid[y][xa] = 0;
         xa++;
       }
       if (
         xa < 3 &&
-        newGrid[y][xa + 1] === newGrid[y][xa] &&
+        newGrid[y][xa + 1] === newGrid[y]?.[xa] &&
         !merged[y][xa + 1]
       ) {
         newGrid[y][xa + 1] *= 2;
@@ -171,17 +182,17 @@ export function moveLeft(grid: number[][]): number[][] {
 
   for (let x = 0; x < 4; x++) {
     for (let y = 0; y < 4; y++) {
-      if (newGrid[y][x] === 0) continue;
+      if (newGrid[y]?.[x] === 0) continue;
       let xa = x;
-      while (xa > 0 && newGrid[y][xa - 1] === 0) {
-        newGrid[y][xa - 1] = newGrid[y][xa];
+      while (xa > 0 && newGrid[y]?.[xa - 1] === 0) {
+        newGrid[y][xa - 1] = newGrid[y]?.[xa];
         newGrid[y][xa] = 0;
         xa--;
       }
       if (
         xa > 0 &&
-        newGrid[y][xa - 1] === newGrid[y][xa] &&
-        !merged[y][xa - 1]
+        newGrid[y][xa - 1] === newGrid[y]?.[xa] &&
+        !merged[y]?.[xa - 1]
       ) {
         newGrid[y][xa - 1] *= 2;
         newGrid[y][xa] = 0;
