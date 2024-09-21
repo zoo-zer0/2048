@@ -1,42 +1,158 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap");
+body{
+  font-family: "Archivo Black", sans-serif;
+  background-color: #f4f3f1;
+}
+
+.title {
   text-align: center;
+  font-size: 3em;
+  grid-column: span 4;
+  color:#acc0aa;
+  margin-bottom: 5px;
+
+}
+.start-button{
+  font-family: 'Tajawal';
+  text-align: center;
+  font-weight: 800;
+  font-size: 20px;
+  margin: 0px auto;
+  grid-column: span 4;
+  width: 150px;
+  color:#f4f3f1;
+  background-color: #acc0aa;
+  border-radius: 10px;
+  height: 50px;
+  border-color: #acc0aa;
+}
+.start-button:hover{
+  color:#a19d95;
+  background-color: #d2e3d1;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.scoreboard {
+  font-family: 'Tajawal';
+  font-weight: 800;
+  letter-spacing: 1px;
+  font-size: 1.5em;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  grid-column: 2 / 4;
+  background-color: #acc0aa;
+  border-radius: 10px;
+  height: 50px;
+  margin-bottom: 20px;
+
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.scoreText{
+  background-color: #acc0aa; /* Background color for "SCORE" */
+  color: whitesmoke;
+  padding: 10px 0px; /* Padding around the text */
+  border-top-left-radius: 10px; /* Rounded corners */
+  border-bottom-left-radius: 10px; /* Rounded corners */
+  flex: 0 0 65%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.scoreNum{
+  font-family: "Archivo Black", sans-serif;
+  background-color: #eee4da; /* Background color for the score number */
+  color: #776e65;
+  padding: 10px 0px; /* Padding around the text */
+  border-top-right-radius: 10px; /* Rounded corners */
+  border-bottom-right-radius: 10px; /* Rounded corners */
+  flex: 0 0 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.grid-container {
+  display: grid; /* Use CSS Grid for the layout */
+  grid-template-columns: repeat(4, 100px); /* 4 columns, each 100px wide */
+  grid-template-rows: auto repeat(4, 100px); /* 4 rows, each 100px tall */
+  gap: 10px; /* Adds some space between the cells */
+  justify-content: center; /* Center the grid horizontally */
+  align-items: center; /* Center the grid vertically */
+  margin: 0 auto;
+}
+.grid-row {
+  display: contents; /* Allows grid cells to align properly */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.grid-cell {
+  width: 100px;
+  height: 100px;
+  background-color: #bbada0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #776e65;
+  border-radius: 10px;
 }
 
-.card {
-  padding: 2em;
+.endMessage{
+  position: fixed;
+  font-family: 'Tajawal';
+  font-weight: 100;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1eee48a;
+  color:#a19d95;
+  font-size: 24px;
+  font-weight: bold;
+  overflow: hidden;
+  z-index: 100; /* Make sure the message appears on top of the grid */
 }
 
-.read-the-docs {
-  color: #888;
+.cell-2 {
+  background-color: #eee4da;
+}
+
+.cell-4 {
+  background-color: #ede0c8;
+}
+
+.cell-8 {
+  background-color: #f2b179;
+  color: #f9f6f2;
+}
+
+.cell-16 {
+  background-color: #f59563;
+  color: #f9f6f2;
+}
+
+.cell-32 {
+  background-color: #f67c5f;
+  color: #f9f6f2;
+}
+
+.cell-64 {
+  background-color: #f65e3b;
+  color: #f9f6f2;
+}
+
+.cell-128 {
+  background-color: #edcf72;
+  color: #f9f6f2;
+}
+
+.grid-cell:empty {
+  background-color: #cdc1b4; /* Lighter color for empty cells */
 }
