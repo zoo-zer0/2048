@@ -1,42 +1,98 @@
+//App.tsx
 import './App.css';
-
-import { useState } from 'react';
-
-import viteLogo from '/vite.svg';
-
-import reactLogo from './assets/react.svg';
+import React, { useEffect, useState } from 'react';
+import './game';
+import {initGrid, generateTwo, moveLeft, moveRight, moveUp, moveDown, calculateScore, gameOver, gameEnd, getCellClass} from './game';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [grid, setGrid] = useState<number[][]>(initGrid());
+  const [score, setScore] = useState(0);
+  const [win, setWin] = useState(false);
+  const [lose, setLose] = useState(false);
+  const startGame = () => {
+    setGrid(initGrid());
+    setScore(0);
+    setWin(false);
+    setLose(false);
+  };
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      let newGrid;
+      switch (event.key) {
+        case 'ArrowUp':
+          newGrid = moveUp(grid);
+          break;
+        case 'ArrowDown':
+          newGrid = moveDown(grid);
+          break;
+        case 'ArrowLeft':
+          newGrid = moveLeft(grid);
+          break;
+        case 'ArrowRight':
+          newGrid = moveRight(grid);
+          break;
+        default:
+          return;
+      }
+
+      if (JSON.stringify(grid) !== JSON.stringify(newGrid)) {
+        newGrid = generateTwo(newGrid);
+        setGrid(newGrid);
+        setScore(calculateScore(newGrid));
+      }
+      if (gameOver(newGrid)) {
+        setLose(true);
+      }
+
+      if (gameEnd(newGrid)) {
+        setWin(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [grid]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className = "grid-container">
+      <h1 className="title">✧･ﾟ* 2048 *･ﾟ✧</h1>
+      <button className='start-button' onClick={startGame}>New Game</button>
+      {win && (
+        <div className='endMessage'>
+          <p>Congrats, you win!! 🤩🎉👍</p>
+          <p>your score: {score}</p>
+          <button className='start-button' onClick={startGame}>New Game</button>
+        </div>
+      )
+      }
+      {lose && (
+        <div className='endMessage'>
+          <p>womp womp, you loser 😔😔👎</p>
+          <p>your score: {score}</p>
+        <button className='start-button' onClick={startGame}>New Game</button>
+        </div>
+      )
+      }
+        {grid.map((row, rowIndex)=> (
+          <div key={rowIndex} className = "grid-row">
+            {row.map((cell, cellIndex)=>(
+              <div key={cellIndex} className={getCellClass(cell)}>
+                {cell !==0 ? cell: ''}
+              </div>
+            )
+            )
+            }
+          </div>
+        )
+        )}
+-     <div className='scoreboard'>
+        <div className='scoreText'>SCORE</div>
+        <div className='scoreNum'>{score}</div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button
-          onClick={() => {
-            setCount(count + 1);
-          }}
-        >
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
+    </div>
+    );
 }
 
 export default App;
