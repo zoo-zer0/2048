@@ -31,6 +31,7 @@ function App() {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (win || lose) return;
+
       let newGrid;
       switch (event.key) {
         case 'ArrowUp':
