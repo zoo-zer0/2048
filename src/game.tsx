@@ -1,4 +1,11 @@
 //game.tsx
+function setGridValue<T>(grid: T[][], row: number, col: number, value: T): T[][]{
+    return grid.map((gridRow, rowIndex) =>
+        gridRow.map((cell, colIndex) =>
+          rowIndex === row && colIndex === col ? value : cell
+        )
+      );
+}
 export function initGrid(): number[][] {
   const grid = Array(4)
     .fill(0)
@@ -21,10 +28,9 @@ export function generateTwo(grid: number[][]): number[][] {
     const [row, col] = selectedCell; // Now this is safe
 
     // Create a copy of the grid to avoid mutation
-    const newGrid = grid.map(row => [...row]);
 
     // Set the selected cell to 2
-    newGrid[row][col] = 2;
+    const newGrid= setGridValue(grid, row, col, 2);
 
     return newGrid;
     }
@@ -99,15 +105,15 @@ function slide(row: number[]): number[] {
   }
   */
 export function moveDown(grid: number[][]): number[][] {
-  const newGrid = grid.map((row) => [...row]);
-  const merged = Array.from({ length: 4 }, () => Array(4).fill(false));
+  let newGrid = grid.map((row) => [...row]);
+  let merged = Array.from({ length: 4 }, () => Array(4).fill(false));
   for (let row = 3; row >= 0; row--) {
     for (let col = 0; col < 4; col++) {
       if (newGrid[row]?.[col] === 0) continue;
       let rowa = row;
-      while (rowa < 3 && newGrid[rowa + 1]?.[col] === 0) {
-        newGrid[rowa + 1][col] = newGrid[rowa]?.[col];
-        newGrid[rowa][col] = 0; 
+      while (rowa < 3 && newGrid[rowa + 1]?.[col]!=null && newGrid[rowa + 1]?.[col] === 0) {
+        newGrid = setGridValue(newGrid, rowa+1, col, newGrid[rowa]?.[col]!);
+        newGrid = setGridValue(newGrid, rowa, col, 0);
         rowa++;
       }
       if (
@@ -115,9 +121,9 @@ export function moveDown(grid: number[][]): number[][] {
         newGrid[rowa + 1]?.[col] === newGrid[rowa]?.[col] &&
         !merged[rowa + 1]?.[col]
       ) {
-        newGrid[rowa + 1][col] *= 2;
-        newGrid[rowa][col] = 0;
-        merged[rowa + 1][col] = true;
+        newGrid = setGridValue(newGrid, rowa + 1, col, newGrid[rowa + 1]?.[col]! * 2); // Double the value
+        newGrid = setGridValue(newGrid, rowa, col, 0); // Clear the current cell
+        merged = setGridValue(merged, rowa+1, col, true);
       }
     }
   }
@@ -125,15 +131,15 @@ export function moveDown(grid: number[][]): number[][] {
 }
 
 export function moveUp(grid: number[][]): number[][] {
-  const newGrid = grid.map((row) => [...row]);
-  const merged = Array.from({ length: 4 }, () => Array(4).fill(false));
+  let newGrid = grid.map((row) => [...row]);
+  let merged = Array.from({ length: 4 }, () => Array(4).fill(false));
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 4; col++) {
       if (newGrid[row]?.[col] === 0) continue;
       let rowa = row;
       while (rowa > 0 && newGrid[rowa - 1]?.[col] === 0) {
-        newGrid[rowa - 1][col] = newGrid[rowa]?.[col];
-        newGrid[rowa][col] = 0;
+        newGrid = setGridValue(newGrid, rowa-1, col, newGrid[rowa]?.[col]!);
+        newGrid = setGridValue(newGrid, rowa, col, 0);
         rowa--;
       }
       if (
@@ -141,9 +147,10 @@ export function moveUp(grid: number[][]): number[][] {
         newGrid[rowa - 1]?.[col] === newGrid[rowa]?.[col] &&
         !merged[rowa - 1]?.[col]
       ) {
-        newGrid[rowa - 1][col] *= 2;
-        newGrid[rowa][col] = 0;
-        merged[rowa - 1][col] = true; // Mark as merged
+        newGrid = setGridValue(newGrid, rowa-1, col, newGrid[rowa-1]?.[col]! *2);
+        newGrid = setGridValue(newGrid, rowa, col, 0);
+        merged = setGridValue(merged, rowa-1, col, true);
+        
       }
     }
   }
@@ -151,25 +158,25 @@ export function moveUp(grid: number[][]): number[][] {
 }
 
 export function moveRight(grid: number[][]): number[][] {
-  const newGrid = grid.map((row) => [...row]);
-  const merged = Array.from({ length: 4 }, () => Array(4).fill(false));
+  let newGrid = grid.map((row) => [...row]);
+  let merged = Array.from({ length: 4 }, () => Array(4).fill(false));
   for (let x = 3; x >= 0; x--) {
     for (let y = 0; y < 4; y++) {
       if (newGrid[y]?.[x] === 0) continue;
       let xa = x;
       while (xa < 3 && newGrid[y]?.[xa + 1] === 0) {
-        newGrid[y][xa + 1] = newGrid[y]?.[xa];
-        newGrid[y][xa] = 0;
+        newGrid = setGridValue(newGrid, y, xa+1, newGrid[y]?.[xa]!);
+        newGrid = setGridValue(newGrid, y, xa, 0);
         xa++;
       }
       if (
         xa < 3 &&
-        newGrid[y][xa + 1] === newGrid[y]?.[xa] &&
-        !merged[y][xa + 1]
+        newGrid[y]?.[xa + 1] === newGrid[y]?.[xa] &&
+        !merged[y]?.[xa + 1]
       ) {
-        newGrid[y][xa + 1] *= 2;
-        newGrid[y][xa] = 0;
-        merged[y][xa + 1] = true;
+        newGrid = setGridValue(newGrid, y, xa+1, newGrid[y]?.[xa+1]! *2);
+        newGrid = setGridValue(newGrid, y, xa, 0);
+        merged = setGridValue(merged, y, xa+1, true);
       }
     }
   }
@@ -177,26 +184,26 @@ export function moveRight(grid: number[][]): number[][] {
 }
 
 export function moveLeft(grid: number[][]): number[][] {
-  const newGrid = grid.map((row) => [...row]);
-  const merged = Array.from({ length: 4 }, () => Array(4).fill(false));
+  let newGrid = grid.map((row) => [...row]);
+  let merged = Array.from({ length: 4 }, () => Array(4).fill(false));
 
   for (let x = 0; x < 4; x++) {
     for (let y = 0; y < 4; y++) {
       if (newGrid[y]?.[x] === 0) continue;
       let xa = x;
       while (xa > 0 && newGrid[y]?.[xa - 1] === 0) {
-        newGrid[y][xa - 1] = newGrid[y]?.[xa];
-        newGrid[y][xa] = 0;
+        newGrid = setGridValue(newGrid, y, xa-1, newGrid[y]?.[xa]!);
+        newGrid = setGridValue(newGrid, y, xa, 0);
         xa--;
       }
       if (
         xa > 0 &&
-        newGrid[y][xa - 1] === newGrid[y]?.[xa] &&
+        newGrid[y]?.[xa - 1] === newGrid[y]?.[xa] &&
         !merged[y]?.[xa - 1]
       ) {
-        newGrid[y][xa - 1] *= 2;
-        newGrid[y][xa] = 0;
-        merged[y][xa - 1] = true; // Mark as merged
+        newGrid = setGridValue(newGrid, y, xa-1, newGrid[y]?.[xa-1]! *2);
+        newGrid = setGridValue(newGrid, y, xa, 0);
+        merged = setGridValue(merged, y, xa-1, true);
       }
     }
   }
