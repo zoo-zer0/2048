@@ -30,7 +30,7 @@ export function generateTwo(grid: number[][]): number[][] {
   const randomIndex = Math.floor(Math.random() * emptyCells.length);
   const selectedCell = emptyCells[randomIndex];
   if (selectedCell) {
-    const [row, col] = selectedCell; 
+    const [row, col] = selectedCell;
     const newGrid = setGridValue(grid, row, col, 2);
 
     return newGrid;
