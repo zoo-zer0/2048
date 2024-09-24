@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap");
-body{
-  font-family: "Archivo Black", sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
+body {
+  font-family: 'Archivo Black', sans-serif;
   background-color: #f4f3f1;
 }
 
@@ -9,11 +9,10 @@ body{
   text-align: center;
   font-size: 3em;
   grid-column: span 4;
-  color:#acc0aa;
+  color: #acc0aa;
   margin-bottom: 5px;
-
 }
-.start-button{
+.start-button {
   font-family: 'Tajawal';
   text-align: center;
   font-weight: 800;
@@ -21,14 +20,14 @@ body{
   margin: 0px auto;
   grid-column: span 4;
   width: 150px;
-  color:#f4f3f1;
+  color: #f4f3f1;
   background-color: #acc0aa;
   border-radius: 10px;
   height: 50px;
   border-color: #acc0aa;
 }
-.start-button:hover{
-  color:#a19d95;
+.start-button:hover {
+  color: #a19d95;
   background-color: #d2e3d1;
 }
 
@@ -46,9 +45,8 @@ body{
   border-radius: 10px;
   height: 50px;
   margin-bottom: 20px;
-
 }
-.scoreText{
+.scoreText {
   background-color: #acc0aa; /* Background color for "SCORE" */
   color: whitesmoke;
   padding: 10px 0px; /* Padding around the text */
@@ -58,10 +56,9 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
-.scoreNum{
-  font-family: "Archivo Black", sans-serif;
+.scoreNum {
+  font-family: 'Archivo Black', sans-serif;
   background-color: #eee4da; /* Background color for the score number */
   color: #776e65;
   padding: 10px 0px; /* Padding around the text */
@@ -72,7 +69,6 @@ body{
   justify-content: center;
   align-items: center;
 }
-
 
 .grid-container {
   display: grid; /* Use CSS Grid for the layout */
@@ -100,7 +96,7 @@ body{
   border-radius: 10px;
 }
 
-.endMessage{
+.endMessage {
   position: fixed;
   font-family: 'Tajawal';
   font-weight: 100;
@@ -113,7 +109,7 @@ body{
   justify-content: center;
   align-items: center;
   background-color: #f1eee48a;
-  color:#a19d95;
+  color: #a19d95;
   font-size: 24px;
   font-weight: bold;
   overflow: hidden;

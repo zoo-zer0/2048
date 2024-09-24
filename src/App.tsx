@@ -1,8 +1,21 @@
 //App.tsx
 import './App.css';
-import React, { useEffect, useState } from 'react';
 import './game';
-import {initGrid, generateTwo, moveLeft, moveRight, moveUp, moveDown, calculateScore, gameOver, gameEnd, getCellClass} from './game';
+
+import React, { useEffect, useState } from 'react';
+
+import {
+  calculateScore,
+  gameEnd,
+  gameOver,
+  generateTwo,
+  getCellClass,
+  initGrid,
+  moveDown,
+  moveLeft,
+  moveRight,
+  moveUp,
+} from './game';
 
 function App() {
   const [grid, setGrid] = useState<number[][]>(initGrid());
@@ -56,43 +69,45 @@ function App() {
   }, [grid]);
 
   return (
-    <div className = "grid-container">
+    <div className="grid-container">
       <h1 className="title">✧･ﾟ* 2048 *･ﾟ✧</h1>
-      <button className='start-button' onClick={startGame}>New Game</button>
+      <button className="start-button" onClick={startGame}>
+        New Game
+      </button>
       {win && (
-        <div className='endMessage'>
+        <div className="endMessage">
           <p>Congrats, you win!! 🤩🎉👍</p>
           <p>your score: {score}</p>
-          <button className='start-button' onClick={startGame}>New Game</button>
+          <button className="start-button" onClick={startGame}>
+            New Game
+          </button>
         </div>
-      )
-      }
+      )}
       {lose && (
-        <div className='endMessage'>
+        <div className="endMessage">
           <p>womp womp, you loser 😔😔👎</p>
           <p>your score: {score}</p>
-        <button className='start-button' onClick={startGame}>New Game</button>
+          <button className="start-button" onClick={startGame}>
+            New Game
+          </button>
         </div>
-      )
-      }
-        {grid.map((row, rowIndex)=> (
-          <div key={rowIndex} className = "grid-row">
-            {row.map((cell, cellIndex)=>(
-              <div key={cellIndex} className={getCellClass(cell)}>
-                {cell !==0 ? cell: ''}
-              </div>
-            )
-            )
-            }
-          </div>
-        )
-        )}
--     <div className='scoreboard'>
-        <div className='scoreText'>SCORE</div>
-        <div className='scoreNum'>{score}</div>
+      )}
+      {grid.map((row, rowIndex) => (
+        <div key={rowIndex} className="grid-row">
+          {row.map((cell, cellIndex) => (
+            <div key={cellIndex} className={getCellClass(cell)}>
+              {cell !== 0 ? cell : ''}
+            </div>
+          ))}
+        </div>
+      ))}
+      -{' '}
+      <div className="scoreboard">
+        <div className="scoreText">SCORE</div>
+        <div className="scoreNum">{score}</div>
       </div>
     </div>
-    );
+  );
 }
 
 export default App;
